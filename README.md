@@ -88,13 +88,27 @@ cd articlewriting-skill
 5. **自审检查**：使用peer-review技能进行投稿前自审
 6. **交付**：手动迁移到Word/LaTeX完成最终排版
 
+## 质量门控
+
+中型或整篇论文任务先使用 `skills/paper-orchestration/` 生成任务包，并在 `plan/progress.md` 记录 capability-use audit。引言和相关工作必须先形成 `refs/evidence-map.md` 或 `plan/evidence-map.md`。实验与结果章节必须先形成 `plan/experiment-protocol.md`、`tables/table-schema.md` 和 `figures/data-manifest.md`。
+
+常用检查命令：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/check_skill_integrity.ps1
+powershell -ExecutionPolicy Bypass -File scripts/research_quality_gate.ps1 -ProjectPath <paper-project>
+```
+
 ## 技能地图
 
 | 场景 | 技能 |
 |---|---|
 | 入口与路由 | `skills/using-research-writing/` |
+| 中型/整篇任务编排 | `skills/paper-orchestration/` |
 | 头脑风暴 | `skills/brainstorming-research/` |
+| 文献驱动引言/相关工作 | `skills/evidence-driven-writing/` |
 | 章节写作 | `skills/writing-chapters/` |
+| 实验与结果规划 | `skills/experiment-results-planning/` |
 | LaTeX输出 | `skills/latex-output/` |
 | 通用写作规范 | `skills/writing-core/` |
 | 文科/社科写作 | `skills/writing-humanities/` |
@@ -193,4 +207,4 @@ research-writing-skill/
 ## 版本
 
 - 版本：3.1.0
-- 更新日期： 2026-03-29
+- 更新日期： 2026-04-29

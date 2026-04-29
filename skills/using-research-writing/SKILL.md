@@ -39,10 +39,14 @@ description: Use when starting any research writing task - establishes workflow 
 
 **在任何响应或行动之前，先调用相关技能。** 即使只有 1% 的可能性某个技能适用，你也应该调用它检查。
 
+**中型或整篇论文任务必须先调用 `paper-orchestration`。** 中型任务包括：影响多个段落、一个以上小节、任一章节、文献论证链、实验/图表设计、或任何已出现质量失败的返工任务。`paper-orchestration` 负责阶段判断、任务包、子代理分发、两阶段 review 与 capability-use audit（能力使用审计）。
+
 ```dot
 digraph skill_flow {
     "用户消息" [shape=doublecircle];
     "是否论文写作相关?" [shape=diamond];
+    "是否中型/整篇任务?" [shape=diamond];
+    "调用 paper-orchestration" [shape=box];
     "已完成头脑风暴?" [shape=diamond];
     "调用 brainstorming-research" [shape=box];
     "根据任务调用对应技能" [shape=box];
@@ -51,8 +55,11 @@ digraph skill_flow {
     "询问用户确认" [shape=doublecircle];
 
     "用户消息" -> "是否论文写作相关?";
-    "是否论文写作相关?" -> "已完成头脑风暴?" [label="是"];
+    "是否论文写作相关?" -> "是否中型/整篇任务?" [label="是"];
     "是否论文写作相关?" -> "执行任务" [label="否，普通问题"];
+    "是否中型/整篇任务?" -> "调用 paper-orchestration" [label="是"];
+    "是否中型/整篇任务?" -> "已完成头脑风暴?" [label="否"];
+    "调用 paper-orchestration" -> "已完成头脑风暴?";
     "已完成头脑风暴?" -> "根据任务调用对应技能" [label="是"];
     "已完成头脑风暴?" -> "调用 brainstorming-research" [label="否"];
     "调用 brainstorming-research" -> "根据任务调用对应技能";
@@ -83,9 +90,12 @@ digraph skill_flow {
 
 | 任务类型 | 调用技能 |
 |----------|----------|
+| 中型任务 / 整篇论文 / 多章节协作 / 质量返工 | paper-orchestration |
 | 开始新论文 / 确定选题 / 第一次对话 | brainstorming-research |
+| 引言 / 相关工作 / 背景综述 / 文献驱动段落 | evidence-driven-writing + literature-review |
 | 写某一章节 | writing-chapters |
 | 文献综述 | literature-review |
+| 实验设计 / 结果章节 / mock 数据 / 表格方案 | experiment-results-planning |
 | 画图 / 数据可视化 | figures-python |
 | 流程图 / 架构图 | figures-diagram |
 | 自审 / 检查 / 投稿准备 | peer-review |
@@ -101,8 +111,10 @@ digraph skill_flow {
 1. **流程技能优先**（brainstorming-research）— 决定如何开始任务
 2. **实现技能其次**（writing-chapters、literature-review 等）— 指导具体执行
 
-"帮我写论文" → 先 brainstorming-research，再 writing-chapters
+"帮我写论文" → 先 paper-orchestration，再 brainstorming-research，再 writing-chapters
 "写第三章" → 检查是否已完成 brainstorming，是则直接 writing-chapters
+
+"优化整篇初稿" → 先 paper-orchestration，生成任务包和能力使用审计，再分派章节或图表任务
 
 ## 技能类型
 
@@ -115,3 +127,7 @@ digraph skill_flow {
 ## 用户指令
 
 用户指令说的是"做什么"，不是"怎么做"。"写第一章"或"帮我润色"不代表跳过工作流。
+
+## 任务收尾
+
+中型及以上任务完成前必须写入 capability-use audit（能力使用审计），记录应使用的技能、实际使用的技能、已消费资料、未使用资料及原因、产物、验证命令和剩余风险。缺少审计时，不得声称任务完成。

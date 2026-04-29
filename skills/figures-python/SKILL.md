@@ -11,6 +11,8 @@ description: Use when creating data visualizations for papers - generates public
 
 - [ ] 确认 conda 环境已激活（research）
 - [ ] 确认图表类型和数据
+- [ ] 记录数据清单（data manifest）
+- [ ] 若使用 mock/synthetic 数据，明确标注为 planning data
 - [ ] 使用顶刊配色方案
 - [ ] 设置 450 DPI 分辨率
 - [ ] 同时输出 PNG 和 SVG
@@ -36,6 +38,25 @@ pip install matplotlib seaborn numpy pandas
 如环境未配置，调用 `environment-setup` 技能。
 
 ## 二、图表规范
+
+### 2.0 数据清单与 mock 数据边界
+
+任何数据图都必须先有数据文件和数据清单（data manifest）。默认路径：
+
+```text
+figures/data-manifest.md
+figures/data/<figure-name>.csv
+figures/<section>/<figure-name>.py
+figures/<section>/<figure-name>.png
+figures/<section>/<figure-name>.svg
+```
+
+`figures/data-manifest.md` 至少记录：
+
+| Figure | Data file | Real/mock | Source | Script | Outputs |
+|---|---|---|---|---|---|
+
+mock 或 synthetic 数据只允许用于规划版图表。文件名必须以 `mock_` 或 `synthetic_` 开头，并在图表、表格或章节草稿中保留 `[待真实实验替换]`。不得把 mock 数据写成“实验结果表明”。
 
 ### 2.1 分辨率要求
 

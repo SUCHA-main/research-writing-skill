@@ -16,18 +16,56 @@ description: Use when writing paper chapters - requires completed brainstorming,
 如果任何条件不满足，必须先调用 brainstorming-research 技能。
 </HARD-GATE>
 
+<HARD-GATE>
+章节写作必须先判断章节类型：
+
+1. Introduction、Related Work、研究背景、文献综述：必须先调用 `evidence-driven-writing`，并读取 `refs/evidence-map.md` 或 `plan/evidence-map.md`。
+2. Methodology、Methods、研究方法：必须按“输入到输出”的技术流写作，不能只罗列模块。
+3. Results、Discussion、实验结果：必须先调用 `experiment-results-planning`，确认真实数据或明确标记的 mock/synthetic planning data。
+
+任何用户要求都不得直接进入正文。诸如“写得自然”“不要泛泛而谈”“注意衔接”只能转化为句子、段落、结构和证据处理。
+</HARD-GATE>
+
 ## Checklist（每章必须完成）
 
 - [ ] 读取 plan/outline.md 确认本章目标和要点
+- [ ] 如果存在 plan/chapter-architecture.md，确认本章文件名、最小正文长度和 agent owner
 - [ ] 检查前置章节是否完成（按逻辑顺序）
 - [ ] 与用户确认本章关键论点和内容方向
 - [ ] 根据学科领域调用对应写作模块
+- [ ] 对引言/相关工作读取 evidence-driven-writing 产物
+- [ ] 对方法章节检查输入到输出 flow
+- [ ] 执行正文污染 contamination firewall 检查
 - [ ] 写作输出到 chapters/XX-name.md
 - [ ] **阶段1：规范合规检查**
 - [ ] **阶段2：质量检查（去AI化、语言流畅度）**
 - [ ] 更新 plan/progress.md
 - [ ] 展示写作成果，询问用户确认或修改
 - [ ] 用户确认后，询问是否继续下一章
+
+## Chapter Agent Contract
+
+Full-paper drafts and redrafts must use a separate fresh agent for each major chapter. The controller prepares the task packet and review criteria; the chapter agent writes only its assigned file.
+
+Each chapter agent must receive:
+
+- the exact chapter file it owns;
+- the chapter's role in the whole manuscript;
+- required source files and evidence IDs;
+- paragraph-level argument chain, not a list of section labels;
+- minimum prose length from `plan/chapter-architecture.md`;
+- prohibited wording and prohibited structure;
+- instructions to report unresolved gaps instead of inventing evidence or results.
+
+Each chapter agent must return:
+
+- status: DONE, DONE_WITH_CONCERNS, NEEDS_CONTEXT, or BLOCKED;
+- changed file path;
+- short summary of argument chain;
+- unresolved evidence/data gaps;
+- self-review against the rejection checks.
+
+The controller must record this in `plan/chapter-agent-provenance.md`. A chapter without provenance is not accepted for a full-paper redraft.
 
 ## 两阶段 Review 机制
 
@@ -137,6 +175,22 @@ digraph writing_chapters {
 4. **禁用列表堆砌**：论文正文优先连贯段落，不使用项目符号
 5. **语气客观**：使用"本文"、"本研究"、"研究表明"等客观表述
 
+### 反罗列写作
+
+每章必须形成连续论证，而不是把要点平铺为短段落。正文段落应满足以下模式之一：
+
+- 背景段：场景约束 → 研究矛盾 → 本章承接。
+- 文献段：同类研究共同解决的问题 → 代表性证据 → 尚未覆盖的边界。
+- 方法段：输入对象 → 处理过程 → 输出形式 → 设计理由。
+- 实验段：评价目标 → 对照关系 → 指标含义 → 可接受结论边界。
+- 讨论段：结果含义 → 工程/学术解释 → 局限和后续验证。
+
+禁止把这些模式写成列表。每个正文段落都要包含因果、转折、承接或限定关系。除参考文献外，正文默认不得出现项目符号；贡献点需要列表时，最多 3 条，并且必须由前后段落解释。
+
+### 长度和密度
+
+对完整论文初稿，Introduction、Methodology、Experimental Results and Analysis、Discussion 等主体章节不能只写成摘要级说明。若 `plan/chapter-architecture.md` 给出 `min_chars`，必须达到该下限。达不到时，返回 NEEDS_CONTEXT 或继续扩写，不得把短稿标记为完成。
+
 ### 格式规范
 
 1. **段落之间空一行**
@@ -210,7 +264,8 @@ digraph writing_chapters {
 - 研究问题（现有不足）
 - 研究目的和意义
 - 研究内容和方法概述
-- 论文结构安排
+- 论文结构安排可保留一小段，但不得用它替代研究空白论证
+- 计算机/工程 SCI 论文通常可将 Related Work 融入 Introduction；不要机械拆出独立 Related Work 章，除非大纲或模板要求
 
 ### 文献综述（Literature Review）
 
@@ -221,17 +276,30 @@ digraph writing_chapters {
 
 ### 研究方法（Methods）
 
-- 详细到可复现
-- 数据来源和处理
-- 分析方法和工具
-- 伦理说明（如适用）
+方法章节必须采用输入到输出（input-to-output）flow，而不是模块清单：
+
+1. 输入对象：数据形态、样本、特征、约束。
+2. 预处理或表示：清洗、编码、划分、标准化。
+3. 核心模型/算法：每个模块说明输入、处理、输出、设计理由。
+4. 训练或推理流程：公式、算法、参数更新或决策路径。
+5. 输出：预测、解释、告警、指标或下游接口。
+6. 与实验的对应：每个关键模块必须能映射到消融、对照或局限说明。
+
+禁止只写“由三层组成”“包括若干模块”后缺少数据流、公式位置和可复现步骤。
 
 ### 结果与讨论
 
-- 结果客观呈现
-- 讨论联系文献
-- 承认局限性
-- 不夸大结论
+结果章节不得保留“实验目的、表位、回填模板、讨论提示、请用户替换”等过程性说明。真实结果用数据支撑；mock 数据只能作为 planning data，并保留 `[待真实实验替换]` 标记，不能写成已验证结论。
+
+## 正文污染防护
+
+正文污染 contamination firewall 必须检查：
+
+1. 用户修改要求不得进入正文。
+2. 过程性说明不得进入正文或附录。
+3. 压缩不等于删空，必须保留核心论点、证据、方法条件和边界。
+4. 不能用表格替代应有的论文论证段落。
+5. 列表只能在目标期刊允许或贡献点特别清晰时使用，正文默认转成连贯段落。
 
 ### 结论（Conclusion）
 

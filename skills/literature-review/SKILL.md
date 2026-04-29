@@ -98,9 +98,29 @@ Yulin Xu and Chaojun Ouyang (2024). CAS Landslide Dataset...
 - [ ] 英文文献：执行搜索并整理结果
 - [ ] 中文文献：提供搜索策略，等待用户提供
 - [ ] 按主题分类整理文献
+- [ ] 生成证据-论点映射（evidence-claim map）
+- [ ] 标注每条文献的引用位置（citation slot）
 - [ ] 撰写综述初稿
 - [ ] 检查所有引用的真实性
 - [ ] 更新 plan/progress.md
+
+## 0. 文献到正文的硬门控
+
+文献检索不是交付终点。写 Introduction、Related Work、研究现状前，必须把文献转成证据-论点映射：
+
+```markdown
+| Source ID | Citation | Abstract-level finding | Usable fact | Supported claim | 引用位置 / citation slot | Risk |
+|---|---|---|---|---|---|---|
+```
+
+要求：
+
+1. `Supported claim` 必须是可写进正文的一句话，不是“这篇文献很相关”。
+2. `引用位置 / citation slot` 必须具体到段落角色，如“Introduction-P2 方法谱系”或“RelatedWork-P3 FL-IDS 局限”。
+3. 每个核心论点至少有 1 条强支撑文献；关键研究空白应由 2 条以上文献共同支撑。
+4. 只允许使用题名、摘要、DOI 元数据、用户提供摘录或已读取全文中的信息。
+
+如果没有 evidence-claim map，不得声称文献综述已完成。
 
 ## 一、文献搜索指南
 
@@ -334,7 +354,7 @@ Author, A. A., & Author, B. B. (Year). Title. Journal, Volume(Issue), pages.
 **执行搜索命令**：
 
 ```bash
-python scripts/scholar_search.py "搜索关键词" --sources crossref,semanticscholar --year 2020-2024 --limit 20 --json -
+python scripts/scholar_search.py "搜索关键词" --sources crossref,semanticscholar --year 2020-2024 --limit 20 --format json
 ```
 
 **输出示例**：
@@ -417,7 +437,7 @@ python scripts/scholar_search.py "搜索关键词" --sources crossref,semanticsc
 curl -s "https://api.crossref.org/works/10.1000/doi123"
 
 # 验证 BibTeX 文件
-python scripts/scholar_search.py --verify-bibtex refs.bib
+python scripts/scholar_search.py "your query" --format bibtex --output refs.bib
 ```
 
 ### 6.2 PDF 文献解析

@@ -15,7 +15,23 @@
 - 任务类型（写作/润色/翻译/画图/环境配置/文献整理）：
 - 输入文件：
 - 输出文件：
+- Required skills：
+- Evidence/data inputs：
+- Required artifacts：
+- Review gate 1（spec compliance）：
+- Review gate 2（quality）：
+- Verification run：
 - 验收标准：
+
+### Capability-use audit（能力使用审计）
+
+- Required skills：
+- Skills actually used：
+- Inputs consumed：
+- Inputs not used and why：
+- Artifacts produced：
+- Verification run：
+- Remaining risk：
 
 ## 三、执行记录
 

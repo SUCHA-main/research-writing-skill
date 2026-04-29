@@ -86,13 +86,27 @@ cd articlewriting-skill
 5. **Self-review**: Use the peer-review skill for pre-submission review
 6. **Delivery**: Manually migrate to Word/LaTeX for final formatting
 
+## Quality Gates
+
+Medium or full-paper tasks should go through `skills/paper-orchestration/` first, with a persistent task packet and a capability-use audit in `plan/progress.md`. Introduction and Related Work require `refs/evidence-map.md` or `plan/evidence-map.md` before drafting. Experiment and Results sections require `plan/experiment-protocol.md`, `tables/table-schema.md`, and `figures/data-manifest.md`.
+
+Common checks:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/check_skill_integrity.ps1
+powershell -ExecutionPolicy Bypass -File scripts/research_quality_gate.ps1 -ProjectPath <paper-project>
+```
+
 ## Skill Map
 
 | Scenario | Skill |
 |---|---|
 | Entry and routing | `skills/using-research-writing/` |
+| Medium/full-paper orchestration | `skills/paper-orchestration/` |
 | Brainstorming | `skills/brainstorming-research/` |
+| Evidence-driven Introduction/Related Work | `skills/evidence-driven-writing/` |
 | Chapter writing | `skills/writing-chapters/` |
+| Experiment and results planning | `skills/experiment-results-planning/` |
 | LaTeX output | `skills/latex-output/` |
 | General writing standards | `skills/writing-core/` |
 | Humanities / social science writing | `skills/writing-humanities/` |
@@ -190,6 +204,6 @@ research-writing-skill/
 
 ## Version
 
-- Version: 3.0.0
-- Updated: 2026-03-19
+- Version: 3.1.0
+- Updated: 2026-04-29
 - Maintenance goal: Stable workflow, traceable content, deliverable outputs, multi-platform support

@@ -34,6 +34,7 @@ allowed-tools: Read Write Edit Bash WebSearch
 | 技能 | 路径 | 说明 |
 |------|------|------|
 | using-research-writing | `skills/using-research-writing/` | 入口技能，规则和路由 |
+| paper-orchestration | `skills/paper-orchestration/` | 中型/整篇任务编排 |
 | brainstorming-research | `skills/brainstorming-research/` | 头脑风暴，7轮问答 |
 | writing-chapters | `skills/writing-chapters/` | 章节写作 |
 | latex-output | `skills/latex-output/` | LaTeX 输出 |
@@ -47,6 +48,8 @@ allowed-tools: Read Write Edit Bash WebSearch
 | writing-medical | `skills/writing-medical/` | 医学写作 |
 | writing-law | `skills/writing-law/` | 法学写作 |
 | literature-review | `skills/literature-review/` | 文献综述 |
+| evidence-driven-writing | `skills/evidence-driven-writing/` | 文献驱动引言/相关工作 |
+| experiment-results-planning | `skills/experiment-results-planning/` | 实验、结果和 mock 数据规划 |
 
 ### 工具技能
 
@@ -103,7 +106,15 @@ allowed-tools: Read Write Edit Bash WebSearch
 
 ### 标准流程
 
-1. **头脑风暴** → 调用 `brainstorming-research`
+1. **入口路由** → 调用 `using-research-writing`
+   - 中型/整篇任务先转入 `paper-orchestration`
+   - 简单章节任务继续检查 plan/ 与章节状态
+
+2. **中型任务编排** → 调用 `paper-orchestration`
+   - 多章节、文献驱动、实验图表或质量返工任务必须先生成任务包
+   - 完成后记录 capability-use audit（能力使用审计）
+
+3. **头脑风暴** → 调用 `brainstorming-research`
    - 确认论文类型（7种）
    - 确认学科领域
    - 确认题目、研究背景、方法
@@ -111,12 +122,12 @@ allowed-tools: Read Write Edit Bash WebSearch
    - 检测 LaTeX 模板
    - 创建 plan/ 和 chapters/
 
-2. **章节写作** → 调用 `writing-chapters`
+4. **章节写作** → 调用 `writing-chapters`
    - 每章独立文件
    - 两阶段 Review（见下方）
    - 用户确认后继续
 
-3. **LaTeX 输出**（可选）→ 调用 `latex-output`
+5. **LaTeX 输出**（可选）→ 调用 `latex-output`
    - 用户提供模板
    - 输出 .tex 文件
    - 可直接编译
@@ -154,6 +165,9 @@ allowed-tools: Read Write Edit Bash WebSearch
 | 医学写作 | `modules/writing-medical.md` |
 | 法学写作 | `modules/writing-law.md` |
 | 文献综述 | `modules/literature-review.md` |
+| 文献驱动写作 | `skills/evidence-driven-writing/` |
+| 论文工作流编排 | `skills/paper-orchestration/` |
+| 实验结果规划 | `skills/experiment-results-planning/` |
 | 翻译润色 | `modules/prompts-collection.md` |
 | 自审检查 | `modules/peer-review.md` |
 | Python图表 | `modules/figures-python.md` |

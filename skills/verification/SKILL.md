@@ -36,9 +36,12 @@ allowed-tools: Read, Bash, Grep
 |------|----------|--------|
 | 章节完成 | 字数统计、结构检查、文件存在 | "应该写完了" |
 | 引用真实 | DOI 可访问、CrossRef API 确认 | "看起来像真的" |
+| 论点有支撑 | evidence map 中有段落级证据 | "这段写得像论文" |
 | 格式正确 | 运行格式检查脚本 | 目测检查 |
 | 无AI痕迹 | 运行风格检查脚本 | "读起来还行" |
 | 文献搜索完成 | 结果数量、DOI 列表、JSON 文件存在 | "搜过了" |
+| skill 改造完成 | 运行 `scripts/check_skill_integrity.ps1` | "文件都写了" |
+| 初稿达到质量门 | 运行 `scripts/research_quality_gate.ps1` | 只运行 style_check |
 
 ## Red Flags - 停止
 
@@ -83,6 +86,30 @@ allowed-tools: Read, Bash, Grep
 ✅ [搜索原始来源] [找到：作者、期刊、年份一致] "引用真实"
 ❌ "引用看起来正确" / "应该是真的"
 ```
+
+### 论点支撑验证
+
+```
+✅ [检查 evidence-map] [看到：每个 gap claim 对应 2 条来源] "研究空白有文献支撑"
+✅ [检查 citation slot] [看到：段落 P2 使用 FL-05 + FL-07] "引用位置明确"
+❌ "相关工作看起来完整" / "这段有学术感"
+```
+
+### Skill 完整性验证
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/check_skill_integrity.ps1
+```
+
+用于确认新增技能、路由、验证脚本和关键门控仍然存在。
+
+### 稿件质量门验证
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/research_quality_gate.ps1 -ProjectPath <paper-project>
+```
+
+用于检查引用覆盖、正文污染、列表化、占位策略、figure data manifest 和 evidence map。投稿前加 `-Submission`，禁止未回填占位。
 
 ### 文献搜索验证
 

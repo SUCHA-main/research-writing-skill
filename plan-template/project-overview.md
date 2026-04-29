@@ -53,10 +53,17 @@
 │   ├── stage-gates.md
 │   ├── progress.md
 │   ├── outline.md
-│   └── notes.md
-├── paper/
+│   ├── notes.md
+│   ├── task-packets/
+│   ├── chapter-blueprints/
+│   └── review/
+├── chapters/
+├── tables/
+│   └── table-schema.md
 ├── figures/
-└── references/
+│   └── data-manifest.md
+└── refs/
+    └── evidence-map.md
 ```
 
 ## 八、初始化确认清单
