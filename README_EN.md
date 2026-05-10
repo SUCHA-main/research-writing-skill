@@ -82,15 +82,17 @@ cd research-writing-skill
 
 For data-driven result figures, the Skill can generate Python scripts first, then the figures are rendered locally. The two examples below show paper figures produced in that workflow, suitable for training curves, metric comparison, and experiment result checks.
 
-![Local Python figure example: validation mIoU comparison](img/python-miou-comparison.png)
-
-![Local Python figure example: training loss comparison](img/python-training-loss-comparison.png)
+<p align="center">
+  <img src="img/python-miou-comparison.png" alt="Local Python figure example: validation mIoU comparison" width="48%">
+  <img src="img/python-training-loss-comparison.png" alt="Local Python figure example: training loss comparison" width="48%">
+</p>
 
 For flowcharts, model architecture diagrams, and mechanism figures, `figures-diagram` can first generate the prompt, and then the prompt can be used with Gemini or another image-generation tool. The two examples below were drawn by Gemini from generated prompts.
 
-![Gemini-generated diagram example: federated calibration workflow](img/gemini-federated-calibration-diagram.png)
-
-![Gemini-generated diagram example: Mask2Former decoding mechanism](img/gemini-mask2former-decoder-diagram.png)
+<p align="center">
+  <img src="img/gemini-federated-calibration-diagram.png" alt="Gemini-generated diagram example: federated calibration workflow" width="48%">
+  <img src="img/gemini-mask2former-decoder-diagram.png" alt="Gemini-generated diagram example: Mask2Former decoding mechanism" width="48%">
+</p>
 
 ## Standard Collaboration Workflow (Recommended)
 
@@ -134,6 +136,16 @@ powershell -ExecutionPolicy Bypass -File scripts/research_quality_gate.ps1 -Proj
 | Python figures | `skills/figures-python/` |
 | Flowcharts / architecture diagrams | `skills/figures-diagram/` |
 | Environment setup and troubleshooting | `skills/environment-setup/` |
+
+## Discussion Group
+
+If you want to discuss paper structure, literature organization, figure prompts, de-AI writing, or template adaptation while using this Skill, you are welcome to join the research writing discussion QQ group.
+
+QQ group: 649198361
+
+<p align="center">
+  <img src="img/qq-research-writing-group.jpg" alt="Research writing discussion QQ group" width="260">
+</p>
 
 ## LaTeX Template Usage
 
@@ -189,14 +201,6 @@ It can produce content close to a final draft, but your institution's template, 
 ### Will this Skill fabricate references?
 
 No. The rules explicitly prohibit fabricating references or data. All citations must be traceable.
-
-## Discussion Group
-
-If you want to discuss paper structure, literature organization, figure prompts, de-AI writing, or template adaptation while using this Skill, you are welcome to join the research writing discussion QQ group.
-
-QQ group: 649198361
-
-![Research writing discussion QQ group](img/qq-research-writing-group.jpg)
 
 ## Repository Structure
 
