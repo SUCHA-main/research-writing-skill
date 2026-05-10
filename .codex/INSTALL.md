@@ -10,7 +10,7 @@
 
 1. **克隆仓库：**
    ```bash
-   git clone https://github.com/Norman-bury/articlewriting-skill.git ~/.codex/research-writing-skill
+   git clone https://github.com/Norman-bury/research-writing-skill.git ~/.codex/research-writing-skill
    ```
 
 2. **创建技能符号链接：**

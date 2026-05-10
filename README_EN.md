@@ -3,8 +3,6 @@
 Upgrade "paper writing" from one-off chat sessions into a trackable, recoverable, and reusable engineering-style collaboration workflow.  
 This Skill is designed for undergraduates, graduate students, and early-stage researchers with a clear goal: fewer detours, less rework, and more time spent on research that truly matters.
 
-![Research Writing Assistant Workflow](assets/readme/workflow.png)
-
 ## What This Is
 
 This is not a prompt pack that only polishes sentences. It is a complete research writing collaboration system.  
@@ -16,7 +14,8 @@ If you are working on a thesis, a course project paper, or a submission draft, t
 
 - **Brainstorming**: 7-round Q&A to confirm paper type, discipline, title, research background, methods, chapter structure
 - **End-to-end collaboration**: From topic development, body writing, and figure generation to pre-submission self-review, executed with stage gates
-- **De-AI writing**: Constrains mechanical transition words, hollow emphasis phrases, subjective expressions, and bullet-point dumping
+- **De-AI writing**: Does not treat polishing as compression; it preserves research objects, data scope, method conditions, metric meanings, and conclusion boundaries
+- **Figure support**: Python handles reproducible data figures, while Gemini and similar image tools handle prompts for flowcharts, architecture diagrams, and conceptual figures
 - **Discipline-specific writing support**: Routed modules for engineering, social sciences, medicine, and law
 - **Literature review support**: Integration of English-language search and Chinese literature organization
 - **LaTeX template support**: Provide your institution/journal template, auto-generate compilable LaTeX project
@@ -47,6 +46,12 @@ By default, Skill outputs are project files — not finished Word documents.
 | Figure scripts | `.py` | Reproducible figure generation logic |
 | Prompt assets | `.md` | Reusable templates for translation, polishing, and de-AI-ification |
 
+## De-AI Writing Boundaries
+
+De-AI writing here does not mean shortening the text. Unless the user explicitly asks for a shorter version, the Skill should not remove facts, data, limiting conditions, or explanatory sentences. Research objects, data ranges, sample definitions, method conditions, metric meanings, experiment boundaries, conclusion limits, and domain-specific terms should remain intact. Language edits serve natural expression, clear logic, and stable wording.
+
+Paper prose should stay in continuous paragraphs instead of becoming a stack of bullet points, and it should not rely on bold or italic styling to create emphasis. The writing avoids mechanical transitions such as "first", "second", "finally", "in addition", and "in conclusion", and it also avoids empty framing phrases such as "it is worth noting that" or "it should be pointed out that". If the original text is complete and naturally ordered but slightly wordy, the safer edit is a light cleanup rather than cutting useful information for the sake of looking concise.
+
 ## Important Boundaries (Read First)
 
 1. The Skill does not automatically generate or write directly to `.docx` files by default.  
@@ -63,8 +68,8 @@ Download the repository, extract it, and copy `research-writing-skill/` into you
 ### Option 2: Git Clone
 
 ```bash
-git clone https://github.com/Norman-bury/articlewriting-skill.git
-cd articlewriting-skill
+git clone https://github.com/Norman-bury/research-writing-skill.git
+cd research-writing-skill
 ```
 
 ### Platform-specific Installation
@@ -73,9 +78,19 @@ cd articlewriting-skill
 - **OpenCode**: See `.opencode/INSTALL.md`
 - **Others**: Place the entire directory in your paper project root
 
-## Real Usage Example (Input → Output)
+## Figure Examples
 
-![Real Usage Example: Input to Output](assets/readme/real-case-input-output.png)
+For data-driven result figures, the Skill can generate Python scripts first, then the figures are rendered locally. The two examples below show paper figures produced in that workflow, suitable for training curves, metric comparison, and experiment result checks.
+
+![Local Python figure example: validation mIoU comparison](img/python-miou-comparison.png)
+
+![Local Python figure example: training loss comparison](img/python-training-loss-comparison.png)
+
+For flowcharts, model architecture diagrams, and mechanism figures, `figures-diagram` can first generate the prompt, and then the prompt can be used with Gemini or another image-generation tool. The two examples below were drawn by Gemini from generated prompts.
+
+![Gemini-generated diagram example: federated calibration workflow](img/gemini-federated-calibration-diagram.png)
+
+![Gemini-generated diagram example: Mask2Former decoding mechanism](img/gemini-mask2former-decoder-diagram.png)
 
 ## Standard Collaboration Workflow (Recommended)
 
@@ -141,13 +156,25 @@ See `latex-templates/README.md` for details.
 
 ### Option B: Pandoc Conversion (Optional)
 
-If you have Pandoc installed locally:
+If Pandoc is installed locally, first confirm that the command is available:
+
+```bash
+pandoc --version
+```
+
+The simplest conversion is:
 
 ```bash
 pandoc draft.md -o draft.docx
 ```
 
-Note: This only handles format conversion — it does not replace your institution's template styling or final manual review.
+If you already have a Word style template from your institution or journal, use it as a reference document:
+
+```bash
+pandoc draft.md --reference-doc=template.docx -o draft.docx
+```
+
+Pandoc handles format conversion and style inheritance, but it does not replace final manual checking. After conversion, check heading levels, figure and table numbers, equations, references, headers, footers, and table-of-contents fields.
 
 ## FAQ
 
@@ -162,6 +189,14 @@ It can produce content close to a final draft, but your institution's template, 
 ### Will this Skill fabricate references?
 
 No. The rules explicitly prohibit fabricating references or data. All citations must be traceable.
+
+## Discussion Group
+
+If you want to discuss paper structure, literature organization, figure prompts, de-AI writing, or template adaptation while using this Skill, you are welcome to join the research writing discussion QQ group.
+
+QQ group: 649198361
+
+![Research writing discussion QQ group](img/qq-research-writing-group.jpg)
 
 ## Repository Structure
 
@@ -179,16 +214,21 @@ research-writing-skill/
 │   ├── session-start
 │   ├── hooks.json
 │   └── hooks-cursor.json
+├── img/                        # README example images
 ├── skills/                     # Skill modules directory
 │   ├── using-research-writing/
+│   ├── paper-orchestration/
 │   ├── brainstorming-research/
+│   ├── evidence-driven-writing/
 │   ├── writing-chapters/
+│   ├── experiment-results-planning/
 │   ├── latex-output/
 │   ├── literature-review/
 │   ├── figures-python/
 │   ├── figures-diagram/
 │   ├── peer-review/
 │   ├── statistical-analysis/
+│   ├── verification/
 │   ├── environment-setup/
 │   ├── prompts-collection/
 │   ├── writing-core/
@@ -205,5 +245,5 @@ research-writing-skill/
 ## Version
 
 - Version: 3.1.0
-- Updated: 2026-04-29
+- Updated: 2026-05-10
 - Maintenance goal: Stable workflow, traceable content, deliverable outputs, multi-platform support

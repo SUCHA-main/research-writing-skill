@@ -4,7 +4,7 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
-## [3.1.0] - 2026-04-29
+## [3.1.0] - 2026-05-10
 
 ### 新增
 
@@ -12,12 +12,14 @@
 - 添加 `evidence-driven-writing`，强制引言、相关工作和背景段落先形成 evidence map 与段落蓝图。
 - 添加 `experiment-results-planning`，区分真实结果与 mock planning data，并要求实验协议、表格 schema 和图表 data manifest。
 - 添加 `scripts/check_skill_integrity.ps1` 和 `scripts/research_quality_gate.ps1`，用于 skill 完整性和稿件质量门验证。
+- README 增加 Python 本地图表、Gemini 提示词图示和科研写作讨论群入口。
 
 ### 变更
 
 - 更新 `writing-chapters`、`literature-review`、`figures-python`、`verification` 和入口路由，使文献、方法、实验、图表和验证形成闭环。
 - 更新 plan 模板，加入 task-packets、chapter-blueprints、review、evidence-map、table-schema 和 data-manifest 约定。
 - 修复 `style_check.ps1` 的 UTF-8 读取问题，并增加正文污染检测。
+- README 补充去 AI 化写作边界和 Pandoc 转 Word 的可选说明。
 
 ## [3.0.0] - 2026-03-19
 

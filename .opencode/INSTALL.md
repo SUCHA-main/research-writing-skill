@@ -10,7 +10,7 @@
 
 ```json
 {
-  "plugin": ["research-writing-assistant@git+https://github.com/Norman-bury/articlewriting-skill.git"]
+  "plugin": ["research-writing-assistant@git+https://github.com/Norman-bury/research-writing-skill.git"]
 }
 ```
 
@@ -50,7 +50,7 @@ use skill tool to load research-writing/brainstorming-research
 
 ```json
 {
-  "plugin": ["research-writing-assistant@git+https://github.com/Norman-bury/articlewriting-skill.git#v3.0.0"]
+  "plugin": ["research-writing-assistant@git+https://github.com/Norman-bury/research-writing-skill.git#v3.1.0"]
 }
 ```
 
@@ -69,5 +69,5 @@ use skill tool to load research-writing/brainstorming-research
 
 ## 获取帮助
 
-- 报告问题：https://github.com/Norman-bury/articlewriting-skill/issues
-- 完整文档：https://github.com/Norman-bury/articlewriting-skill
+- 报告问题：https://github.com/Norman-bury/research-writing-skill/issues
+- 完整文档：https://github.com/Norman-bury/research-writing-skill

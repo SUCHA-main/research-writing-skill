@@ -5,8 +5,6 @@
 把"论文写作"从一次性聊天，升级成可追踪、可恢复、可复用的工程化协作流程。  
 这个 Skill 面向本科生、研究生和早期科研人员，目标很直接：少走弯路，减少返工，把时间花在真正有价值的研究内容上。
 
-![科研写作助手使用流程](assets/readme/workflow.png)
-
 ## 项目定位
 
 这不是一个"只会润色句子"的提示词包，而是一套完整的科研写作协作系统。  
@@ -18,7 +16,8 @@
 
 - **头脑风暴**：7轮问答确认论文类型、学科、题目、研究背景、方法、章节结构
 - **AI辅助写作**：从选题推进、正文写作、图表生成到投稿前自审，按阶段门禁执行
-- **去AI化写作**：约束机械过渡词、空壳强调句、主观化表达和列表堆砌
+- **去AI化写作**：不把润色等同于压缩，优先保留研究对象、数据口径、方法条件、指标含义和结论边界
+- **图表生成支持**：Python 负责可复现数据图，Gemini 等生图工具负责流程图、架构图和概念图提示词
 - **学科化写作支持**：工科、社科、医学、法学模块分流
 - **文献综述支持**：英文检索整合与中文文献整理协作
 - **LaTeX模板支持**：用户提供学校/期刊模板，自动生成可编译的LaTeX项目
@@ -49,6 +48,12 @@
 | 图表脚本 | `.py` | 可复现图表生成逻辑 |
 | 提示词资产 | `.md` | 可复用的翻译、润色、去AI化模板 |
 
+## 去AI化写作边界
+
+这里的去AI化不是把原文压短。除非用户明确要求缩写，Skill 不会主动删减事实、数据、限定条件和解释句。研究对象、数据范围、样本口径、方法条件、指标含义、实验边界、结论限制和专有名词都应保留，语言调整只服务于表达自然、逻辑清楚和口径稳定。
+
+正文优先使用连续段落，不把论文内容改成项目符号堆砌，也不依赖加粗或斜体制造重点。写作时会避开"首先、其次、最后、此外、另外、接下来、总之"等机械连接词，也会避开"值得注意的是、需要指出的是、重要的是、必须强调的是"等空壳句式。遇到原文信息完整、语序自然但略显啰嗦的情况，只做轻微整理，不为了显得精炼而压掉必要信息。
+
 ## 重要边界（务必先看）
 
 1. Skill 默认不会自动生成或直接写入 `.docx`。  
@@ -65,8 +70,8 @@
 ### 方式二：Git Clone
 
 ```bash
-git clone https://github.com/Norman-bury/articlewriting-skill.git
-cd articlewriting-skill
+git clone https://github.com/Norman-bury/research-writing-skill.git
+cd research-writing-skill
 ```
 
 ### 各平台安装
@@ -75,9 +80,19 @@ cd articlewriting-skill
 - **OpenCode**：参考 `.opencode/INSTALL.md`
 - **其他平台**：将整个目录放入论文项目根目录即可
 
-## 真实使用案例（输入 -> 输出）
+## 图表示例（真实产物）
 
-![真实使用案例：输入到输出](assets/readme/real-case-input-output.png)
+数据结果图优先由 Skill 生成 Python 脚本，再在本地运行绘制。下面两张图展示的是这种方式得到的论文结果图示例，适合用于训练曲线、指标对比和实验结果复核。
+
+![本地 Python 绘图示例：验证集 mIoU 对比](img/python-miou-comparison.png)
+
+![本地 Python 绘图示例：训练损失对比](img/python-training-loss-comparison.png)
+
+流程图、模型结构图和机制图可以先由 `figures-diagram` 生成提示词，再交给 Gemini 等生图工具绘制。下面两张图是按提示词生成的图示示例。
+
+![Gemini 生成图示示例：联邦校准流程](img/gemini-federated-calibration-diagram.png)
+
+![Gemini 生成图示示例：Mask2Former 解码机制](img/gemini-mask2former-decoder-diagram.png)
 
 ## 标准协作流程（推荐）
 
@@ -143,13 +158,25 @@ powershell -ExecutionPolicy Bypass -File scripts/research_quality_gate.ps1 -Proj
 
 ### 方案 B：Pandoc 转换（可选）
 
-如果你本地已安装 Pandoc，可尝试：
+如果你本地已安装 Pandoc，可以先确认命令可用：
+
+```bash
+pandoc --version
+```
+
+最简单的转换方式是把 Markdown 转成 Word：
 
 ```bash
 pandoc draft.md -o draft.docx
 ```
 
-说明：这只解决格式转换，不替代学校模板排版和最终人工校对。
+如果你已经有学校或期刊的 Word 样式模板，可以使用参考模板生成 `.docx`：
+
+```bash
+pandoc draft.md --reference-doc=template.docx -o draft.docx
+```
+
+Pandoc 主要解决格式转换和样式继承，不替代最终人工校对。转换后仍需检查标题层级、图表编号、公式、参考文献、页眉页脚和目录域。
 
 ## FAQ
 
@@ -164,6 +191,14 @@ pandoc draft.md -o draft.docx
 ### 这个 Skill 会不会瞎编文献？
 
 不会。规则层面明确禁止编造文献与数据；引用要求可追溯。
+
+## 交流讨论
+
+如果你在使用过程中想交流论文结构、文献整理、图表提示词、去AI化写作或模板适配，欢迎加入科研写作讨论群，大家一起讨论和交流。
+
+QQ群：649198361
+
+![科研写作讨论群 QQ 群](img/qq-research-writing-group.jpg)
 
 ## 仓库结构
 
@@ -181,16 +216,21 @@ research-writing-skill/
 │   ├── session-start
 │   ├── hooks.json
 │   └── hooks-cursor.json
+├── img/                        # README 示例图片
 ├── skills/                     # 技能模块目录
 │   ├── using-research-writing/
+│   ├── paper-orchestration/
 │   ├── brainstorming-research/
+│   ├── evidence-driven-writing/
 │   ├── writing-chapters/
+│   ├── experiment-results-planning/
 │   ├── latex-output/
 │   ├── literature-review/
 │   ├── figures-python/
 │   ├── figures-diagram/
 │   ├── peer-review/
 │   ├── statistical-analysis/
+│   ├── verification/
 │   ├── environment-setup/
 │   ├── prompts-collection/
 │   ├── writing-core/
@@ -207,4 +247,4 @@ research-writing-skill/
 ## 版本
 
 - 版本：3.1.0
-- 更新日期： 2026-04-29
+- 更新日期： 2026-05-10
