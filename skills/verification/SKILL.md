@@ -38,7 +38,7 @@ allowed-tools: Read, Bash, Grep
 | 引用真实 | DOI 可访问、CrossRef API 确认 | "看起来像真的" |
 | 论点有支撑 | evidence map 中有段落级证据 | "这段写得像论文" |
 | 格式正确 | 运行格式检查脚本 | 目测检查 |
-| 无AI痕迹 | 运行风格检查脚本 | "读起来还行" |
+| 表达自然且信息保真 | 运行风格检查脚本并人工核对原文 | "读起来还行" |
 | 文献搜索完成 | 结果数量、DOI 列表、JSON 文件存在 | "搜过了" |
 | skill 改造完成 | 运行 `scripts/check_skill_integrity.ps1` | "文件都写了" |
 | 初稿达到质量门 | 运行 `scripts/research_quality_gate.ps1` | 只运行 style_check |

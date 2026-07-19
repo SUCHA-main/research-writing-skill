@@ -27,8 +27,7 @@ from pathlib import Path
 try:
     import fitz  # PyMuPDF
 except ImportError:
-    print("Error: PyMuPDF required. Install with: pip install pymupdf")
-    sys.exit(1)
+    fitz = None
 
 
 # Section patterns for academic papers
@@ -222,6 +221,10 @@ Examples:
 
     args = parser.parse_args()
 
+    if fitz is None:
+        print("Error: PyMuPDF required. Install with: pip install pymupdf", file=sys.stderr)
+        return 1
+
     if not Path(args.pdf_path).exists():
         print(f"Error: File not found: {args.pdf_path}", file=sys.stderr)
         sys.exit(1)
@@ -266,4 +269,4 @@ Examples:
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

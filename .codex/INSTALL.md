@@ -1,63 +1,72 @@
 # Installing Research Writing Assistant for Codex
 
-通过 Codex 原生技能发现机制启用科研写作助手。只需克隆并创建符号链接。
+通过 Codex 的 Agent Skills 发现机制启用本仓库中的各个技能。每个
+`skills/<name>/` 目录都包含独立的 `SKILL.md`，因此需要逐个链接到
+`~/.agents/skills/`。
 
 ## 前置要求
 
 - Git
+- 支持符号链接的 shell，或 Windows PowerShell 的目录连接
 
-## 安装步骤
+## macOS / Linux
 
-1. **克隆仓库：**
-   ```bash
-   git clone https://github.com/Norman-bury/research-writing-skill.git ~/.codex/research-writing-skill
-   ```
+```bash
+git clone https://github.com/SUCHA-main/research-writing-skill.git \
+  "$HOME/.codex/research-writing-skill"
+mkdir -p "$HOME/.agents/skills"
 
-2. **创建技能符号链接：**
-   ```bash
-   mkdir -p ~/.agents/skills
-   ln -s ~/.codex/research-writing-skill/skills ~/.agents/skills/research-writing
-   ```
+for skill_dir in "$HOME/.codex/research-writing-skill"/skills/*; do
+  if [ -f "$skill_dir/SKILL.md" ]; then
+    ln -sfn "$skill_dir" "$HOME/.agents/skills/$(basename "$skill_dir")"
+  fi
+done
+```
 
-   **Windows (PowerShell)：**
-   ```powershell
-   New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.agents\skills"
-   cmd /c mklink /J "$env:USERPROFILE\.agents\skills\research-writing" "$env:USERPROFILE\.codex\research-writing-skill\skills"
-   ```
+## Windows (PowerShell)
 
-3. **重启 Codex**（退出并重新启动 CLI）以发现技能。
+```powershell
+$repo = "$env:USERPROFILE\.codex\research-writing-skill"
+$skillsRoot = "$env:USERPROFILE\.agents\skills"
+
+git clone https://github.com/SUCHA-main/research-writing-skill.git $repo
+New-Item -ItemType Directory -Force -Path $skillsRoot | Out-Null
+
+Get-ChildItem "$repo\skills" -Directory | Where-Object {
+    Test-Path (Join-Path $_.FullName "SKILL.md")
+} | ForEach-Object {
+    $link = Join-Path $skillsRoot $_.Name
+    if (-not (Test-Path -LiteralPath $link)) {
+        New-Item -ItemType Junction -Path $link -Target $_.FullName | Out-Null
+    }
+}
+```
+
+如果目标目录已经存在，命令会保留它，不会覆盖。请先人工确认同名技能的
+来源，再决定是否替换。
 
 ## 验证安装
 
+重启 Codex 后，确认 `~/.agents/skills/` 下出现各技能目录，例如：
+
 ```bash
-ls -la ~/.agents/skills/research-writing
+ls -la "$HOME/.agents/skills/using-research-writing"
+ls -la "$HOME/.agents/skills/paper-orchestration"
 ```
 
-你应该看到一个指向 research-writing-skill/skills 目录的符号链接（Windows 上是目录连接）。
+每个目录中都应能看到 `SKILL.md`。随后可在对话中请求头脑风暴、文献综述
+或论文结构规划，并确认 Codex 加载了对应技能。
 
 ## 更新
 
 ```bash
-cd ~/.codex/research-writing-skill && git pull
+cd "$HOME/.codex/research-writing-skill"
+git pull --ff-only
 ```
 
-技能通过符号链接即时更新。
+符号链接或目录连接仍指向同一克隆目录，不需要重新创建。
 
-## 卸载
+## 来源
 
-```bash
-rm ~/.agents/skills/research-writing
-```
-
-可选：删除克隆的仓库：`rm -rf ~/.codex/research-writing-skill`
-
-## 使用
-
-安装后，在对话中提到论文写作相关任务即可触发技能：
-
-- "帮我写毕业论文"
-- "我要写一篇 SCI 论文"
-- "帮我做文献综述"
-- "画一个数据图表"
-
-技能会自动引导你完成头脑风暴、章节规划和写作流程。
+- 当前 fork：https://github.com/SUCHA-main/research-writing-skill
+- 原始上游：https://github.com/Norman-bury/research-writing-skill

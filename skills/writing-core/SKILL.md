@@ -7,6 +7,9 @@ description: Use when writing or revising academic papers, especially Chinese jo
 
 本技能用于控制论文写作质量，重点是中文学术论文的自然表达、去AI化改写与可提交的Markdown排版。
 
+这里的“去AI化”只指减少模板化表达并保持信息保真，不是规避 AI 检测或
+学术诚信审查。所有事实、数据、引用和结论仍需独立核验。
+
 <EXTREMELY-IMPORTANT>
 以下规范必须严格遵守，不得因为"效率"或"简化"而跳过。
 </EXTREMELY-IMPORTANT>

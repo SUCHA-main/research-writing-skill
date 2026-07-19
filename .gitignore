@@ -5,6 +5,30 @@ Thumbs.db
 # Local temporary files
 *.tmp
 *.temp
+*.log
+
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# JavaScript dependencies and generated output
+node_modules/
+dist/
+build/
+.cache/
+
+# Local OpenCode setup artifacts
+.opencode/package.json
+.opencode/package-lock.json
+.opencode/pnpm-lock.yaml
+.opencode/yarn.lock
 
 # Local planning artifacts (optional, keep plan-template)
 plan/

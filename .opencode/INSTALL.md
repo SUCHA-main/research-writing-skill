@@ -1,73 +1,80 @@
 # Installing Research Writing Assistant for OpenCode
 
+本仓库是一个 Agent Skills 集合，不是可由 `opencode.json` 的 `plugin` 字段
+安装的 npm 插件。OpenCode 会从 `~/.config/opencode/skills/<name>/SKILL.md`
+发现全局技能，因此应逐个链接 `skills/` 下的目录。
+
 ## 前置要求
 
-- [OpenCode.ai](https://opencode.ai) 已安装
+- [OpenCode](https://opencode.ai) 已安装
+- Git
+- 支持符号链接的 shell，或 Windows PowerShell 的目录连接
 
-## 安装步骤
+## macOS / Linux
 
-在你的 `opencode.json`（全局或项目级别）的 `plugin` 数组中添加：
+```bash
+git clone https://github.com/SUCHA-main/research-writing-skill.git \
+  "$HOME/.config/opencode/research-writing-skill"
+mkdir -p "$HOME/.config/opencode/skills"
 
-```json
-{
-  "plugin": ["research-writing-assistant@git+https://github.com/Norman-bury/research-writing-skill.git"]
+for skill_dir in "$HOME/.config/opencode/research-writing-skill"/skills/*; do
+  if [ -f "$skill_dir/SKILL.md" ]; then
+    ln -sfn "$skill_dir" "$HOME/.config/opencode/skills/$(basename "$skill_dir")"
+  fi
+done
+```
+
+## Windows (PowerShell)
+
+```powershell
+$repo = "$env:USERPROFILE\.config\opencode\research-writing-skill"
+$skillsRoot = "$env:USERPROFILE\.config\opencode\skills"
+
+git clone https://github.com/SUCHA-main/research-writing-skill.git $repo
+New-Item -ItemType Directory -Force -Path $skillsRoot | Out-Null
+
+Get-ChildItem "$repo\skills" -Directory | Where-Object {
+    Test-Path (Join-Path $_.FullName "SKILL.md")
+} | ForEach-Object {
+    $link = Join-Path $skillsRoot $_.Name
+    if (-not (Test-Path -LiteralPath $link)) {
+        New-Item -ItemType Junction -Path $link -Target $_.FullName | Out-Null
+    }
 }
 ```
 
-重启 OpenCode。插件会自动安装并注册所有技能。
+如果目标目录已经存在，命令会保留它，不会覆盖。请先人工确认同名技能的
+来源，再决定是否替换。
 
-验证安装：询问 "告诉我你的科研写作能力"
+## 验证安装
 
-## 从旧版符号链接安装迁移
+重启 OpenCode，在会话中使用原生 `skill` 工具列出技能，并确认至少能发现：
 
-如果之前使用 `git clone` 和符号链接安装，请移除旧配置：
+- `using-research-writing`
+- `paper-orchestration`
+- `evidence-driven-writing`
 
-```bash
-# 移除旧符号链接
-rm -f ~/.config/opencode/plugins/research-writing.js
-rm -rf ~/.config/opencode/skills/research-writing
-
-# 可选：删除克隆的仓库
-rm -rf ~/.config/opencode/research-writing-skill
-```
-
-然后按上述安装步骤操作。
-
-## 使用
-
-使用 OpenCode 原生 `skill` 工具：
-
-```
-use skill tool to list skills
-use skill tool to load research-writing/brainstorming-research
-```
+加载时使用技能目录名，不要使用旧文档中的
+`research-writing/brainstorming-research` 形式。
 
 ## 更新
 
-重启 OpenCode 时自动更新。
-
-锁定特定版本：
-
-```json
-{
-  "plugin": ["research-writing-assistant@git+https://github.com/Norman-bury/research-writing-skill.git#v3.1.0"]
-}
+```bash
+cd "$HOME/.config/opencode/research-writing-skill"
+git pull --ff-only
 ```
+
+符号链接或目录连接仍指向同一克隆目录，不需要重新创建。
 
 ## 故障排除
 
-### 插件未加载
+1. 确认目标技能目录中存在 `SKILL.md`。
+2. 确认链接指向当前仓库的 `skills/<name>/` 目录。
+3. 使用 OpenCode 原生 `skill` 工具重新列出技能。
+4. 如果仍无法发现，核对当前 OpenCode 版本的 Agent Skills 文档。
 
-1. 检查日志：`opencode run --print-logs "hello" 2>&1 | grep -i research`
-2. 验证 `opencode.json` 中的插件配置
-3. 确保运行的是最新版本的 OpenCode
+## 来源与帮助
 
-### 技能未找到
-
-1. 使用 `skill` 工具列出已发现的技能
-2. 检查插件是否正常加载（见上文）
-
-## 获取帮助
-
-- 报告问题：https://github.com/Norman-bury/research-writing-skill/issues
-- 完整文档：https://github.com/Norman-bury/research-writing-skill
+- 当前 fork：https://github.com/SUCHA-main/research-writing-skill
+- 问题反馈：https://github.com/SUCHA-main/research-writing-skill/issues
+- 原始上游：https://github.com/Norman-bury/research-writing-skill

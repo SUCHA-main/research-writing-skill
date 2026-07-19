@@ -88,6 +88,9 @@ description: Use for translation, polishing, or de-AI-ification of academic text
 
 ## 三、去AI化
 
+本节中的“去AI化”只指减少模板腔、翻译腔和机械表达，同时保持信息准确与
+完整；不得用于规避 AI 检测或学术诚信审查，也不能替代事实、引用和方法核验。
+
 ### 3.1 去AI味（英文）
 
 ```markdown
@@ -95,7 +98,7 @@ description: Use for translation, polishing, or de-AI-ification of academic text
 你是计算机科学领域的资深学术编辑，专注于提升论文自然度。
 
 # Task
-请对【英文LaTeX代码片段】进行"去AI化"重写。
+请对【英文LaTeX代码片段】进行自然表达与信息保真的重写。
 
 # Constraints
 1. 避免使用被滥用的词汇（leverage, delve into, tapestry等）
@@ -106,7 +109,7 @@ description: Use for translation, polishing, or de-AI-ification of academic text
 # Output
 - Part 1 [LaTeX]：重写后的代码
 - Part 2 [Translation]：对应中文直译
-- Part 3 [Modification Log]：调整说明或"[检测通过]"
+- Part 3 [Modification Log]：调整说明或"[无需修改]"
 ```
 
 ### 3.2 AI味浓厚词汇表（避免使用）
@@ -146,7 +149,7 @@ description: Use for translation, polishing, or de-AI-ification of academic text
 
 # Output
 - Part 1 [Refined Text]：改写后的中文正文
-- Part 2 [Modification Log]：说明主要改动，特别标出是否处理了翻译腔、模板腔、审稿回复口吻或空泛判断；若原文已自然，输出"[检测通过]"
+- Part 2 [Modification Log]：说明主要改动，特别标出是否处理了翻译腔、模板腔、审稿回复口吻或空泛判断；若原文已自然，输出"[无需修改]"
 - Part 3 [Information Check]：确认是否保留了关键对象、数据、方法、指标和边界；如存在信息缺失风险，明确指出
 ```
 
@@ -200,7 +203,7 @@ description: Use for translation, polishing, or de-AI-ification of academic text
 3. 忽略"可改可不改"的问题
 
 # Output
-- 无问题：[检测通过，无实质性问题]
+- 无问题：[未发现明确的实质性问题]
 - 有问题：中文分点简要指出
 ```
 
@@ -240,12 +243,15 @@ description: Use for translation, polishing, or de-AI-ification of academic text
 # Task
 请对【PDF论文文件】撰写审稿报告。
 
+# Boundary
+这是基于当前输入的模拟自审，不替代导师或真实同行评审，也不预测录用结果。
+
 # Output
 Part 1 [Review Report]：
 - Summary: 一句话总结
 - Strengths: 1-2点贡献
-- Weaknesses (Critical): 3-5个致命问题
-- Rating: 1-10分
+- Weaknesses (Critical): 只列出能够从输入中明确识别的严重问题，不凑数量
+- Rating: 可选的自审优先级评分（1-10分），不代表真实投稿结果
 
 Part 2 [Strategic Advice]：
 - 解释问题原因

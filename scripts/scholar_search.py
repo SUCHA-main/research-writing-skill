@@ -37,8 +37,7 @@ from urllib.parse import quote
 try:
     import requests
 except ImportError:
-    print("Error: requests library required. Install with: pip install requests")
-    sys.exit(1)
+    requests = None
 
 
 # ═══════════════════════════════════════════════════════════════════════
@@ -542,6 +541,10 @@ Supported formats:
 
     args = parser.parse_args()
 
+    if requests is None:
+        print("Error: requests library required. Install with: pip install requests", file=sys.stderr)
+        return 1
+
     # Parse year range
     year_start, year_end = None, None
     if args.year:
@@ -589,4 +592,4 @@ Supported formats:
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
